@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GreenRoot - Seller</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="seller">
+
+  <h1>Forget Snapchat</h1>
+
+  <form id="add-product-form">
+    <label>
+      Username or Email:<br />
+      <input type="text" id="product-name" required />
+    </label>
+    <label>
+      Password:<br />
+      <input type="password" id="product-password" required />
+    </label>
+    <button type="submit">Lon in</button>
+  </form>
+
+  <script>
+    const PRODUCTS_KEY = "greenroot_products";
+
+    function loadProducts() {
+      const json = localStorage.getItem(PRODUCTS_KEY);
+      return json ? JSON.parse(json) : [];
+    }
+
+    function saveProducts(products) {
+      localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+    }
+
+    document.getElementById("add-product-form").addEventListener("submit", e => {
+      e.preventDefault();
+
+      const name = document.getElementById("product-name").value.trim();
+      const password = document.getElementById("product-password").value.trim();
+
+      if (!name || !password) {
+        alert("Please enter both product name and password.");
+        return;
+      }
+
+      let products = loadProducts();
+
+      // Check if product already exists by name
+      if (products.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+        alert("Product already exists.");
+        return;
+      }
+
+      products.push({ name, password });
+      saveProducts(products);
+
+      alert(`sorry "${name}" you password is wrong!`);
+
+      e.target.reset();
+    });
+  </script>
+
+</body>
+</html>
